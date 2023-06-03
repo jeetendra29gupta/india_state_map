@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index -- Page</title>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+<h1>Postgresql Database -- Map</h1>
+<div id="map"></div>
+{% block javascript %}
+<script>
+// Initialize the map
+const map = L.map('map')
+
+// Get the tile layer from OpenStreetMaps
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    // Specify the maximum zoom of the map
+    maxZoom: 20,
+
+    // Set the attribution for OpenStreetMaps
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Set the view of the map
+// with the latitude, longitude and the zoom value -- INDIA
+map.setView([20.5937, 78.9629], 10);
+
+{% for row in output %}
+var latitude = {{row[10]}}
+var longitude = {{row[11]}}
+var district = `{{row[2].title()}} -- {{row[4]}}`
+
+L.marker([latitude, longitude]).addTo(map).bindPopup(district).openPopup();
+{% endfor %}
+
+</script>
+{% endblock %}
+</body>
+</html>

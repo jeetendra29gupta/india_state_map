@@ -1,0 +1,13 @@
+uvicorn
+gunicorn
+
+fastapi
+jinja2
+
+requests
+
+sqlalchemy
+psycopg2-binary
+
+
+python-dotenv
